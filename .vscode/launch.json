@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - DialogoNuevoJuego",
+            "request": "launch",
+            "mainClass": "com.palmaactiva.jaminas.ui.DialogoNuevoJuego"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Jaminas",
+            "request": "launch",
+            "mainClass": "com.palmaactiva.jaminas.Jaminas"
+        }
+    ]
+}
