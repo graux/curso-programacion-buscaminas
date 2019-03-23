@@ -18,7 +18,7 @@ import org.joda.time.Period;
  * @author Fran Grau <fran@kydemy.com>
  */
 public class JuegoMinas implements GestorEventosCasilla, DisparadorEventosCasilla {
-    
+
     public static JuegoMinas fromSerializable(JuegoMinasSerializable juegoCargado) {
         Posicion[] posicionesMinas = juegoCargado.getPosicionesMinas();
         int tamañoBoton = JuegoMinas.getTamañoBoton(juegoCargado.getFilas(), juegoCargado.getColumnas());
@@ -28,11 +28,11 @@ public class JuegoMinas implements GestorEventosCasilla, DisparadorEventosCasill
         nuevoJuego.cronoJuego.setTiempo(juegoCargado.getTiempoMillis());
         return nuevoJuego;
     }
-    
+
     public static int getTamañoBoton(int filas, int columnas) {
         return (filas * columnas) < 200 ? 50 : 35;
     }
-    
+
     private final int filas;
     private final int columnas;
     private final int numeroMinas;
@@ -45,7 +45,7 @@ public class JuegoMinas implements GestorEventosCasilla, DisparadorEventosCasill
     private HashSet<Casilla> casillasDescubiertas;
     private boolean juegoTerminado = false;
     private JuegoMinasSerializable partidaCargada;
-    
+
     public JuegoMinas(int filas, int columnas, int numMinas, int tamañoBoton) {
         this.filas = filas;
         this.columnas = columnas;
@@ -53,7 +53,7 @@ public class JuegoMinas implements GestorEventosCasilla, DisparadorEventosCasill
         this.tamañoBoton = tamañoBoton;
         this.cronoJuego = new Cronometro();
     }
-    
+
     public void inicializarPartida(JPanel panelCasillas) {
         Casilla.resetIconos();
         CasillaMina.resetIconos();
@@ -105,15 +105,15 @@ public class JuegoMinas implements GestorEventosCasilla, DisparadorEventosCasill
         panelCasillas.repaint();
         panelCasillas.invalidate();
     }
-    
+
     public int getFilas() {
         return filas;
     }
-    
+
     public int getColumnas() {
         return columnas;
     }
-    
+
     private List<Posicion> generarPosicionesMinas() {
         List<Posicion> nuevasMinas = new ArrayList<>(this.numeroMinas);
         Posicion pos;
@@ -125,43 +125,43 @@ public class JuegoMinas implements GestorEventosCasilla, DisparadorEventosCasill
         } while (nuevasMinas.size() != this.numeroMinas);
         return nuevasMinas;
     }
-    
+
     private Casilla getCasillaPosicion(Posicion pos) {
         if (pos.dentroRegilla(this.filas, this.columnas)) {
             return this.mapaCasillas.get(pos);
         }
         return null;
     }
-    
+
     public void empezarJuego() {
         this.cronoJuego.contar();
         this.dispararEvento(EventoCasilla.Tipo.INICIO, null);
     }
-    
+
     public Period getTiempoJuego() {
         return this.cronoJuego.getTiempo();
     }
-    
+
     public int getNumeroMinas() {
         return this.numeroMinas;
     }
-    
+
     public int getNumeroCasillas() {
         return (this.filas * this.columnas) - this.numeroMinas;
     }
-    
+
     public int getTamañoBoton() {
         return tamañoBoton;
     }
-    
+
     public int getNumeroBanderas() {
         return this.numeroBanderas;
     }
-    
+
     public int getNumeroCasillasDescubiertas() {
         return this.casillasDescubiertas.size();
     }
-    
+
     private void gameOver() {
         for (Casilla casilla : this.mapaCasillas.values()) {
             if (casilla.esMina()) {
@@ -172,7 +172,7 @@ public class JuegoMinas implements GestorEventosCasilla, DisparadorEventosCasill
         }
         this.juegoTerminado = true;
     }
-    
+
     @Override
     public void gestionarEventoCasilla(EventoCasilla evento) {
         switch (evento.getTipoEvento()) {
@@ -198,33 +198,33 @@ public class JuegoMinas implements GestorEventosCasilla, DisparadorEventosCasill
         }
         this.dispararEvento(evento);
     }
-    
+
     @Override
     public void addGestorEventos(GestorEventosCasilla gestor) {
         this.gestoresEventos.add(gestor);
     }
-    
+
     @Override
     public List<GestorEventosCasilla> getGestoresEventos() {
         return this.gestoresEventos;
     }
-    
+
     public int getPuntuacion() {
         float porcentajeMinas = 100 * this.numeroMinas / (float) (this.filas * this.columnas);
-        double maxPuntos = (porcentajeMinas * Math.pow(this.numeroMinas, 2));
-        double segundosJuego = this.cronoJuego.getDuracion().getMillis();
-        int puntuacion = (int) Math.round(maxPuntos - segundosJuego * this.numeroMinas);
+        double maxPuntos = this.filas * this.columnas * porcentajeMinas;
+        double segundosJuego = this.cronoJuego.getDuracion().getMillis() / 1000;
+        int puntuacion = (int) Math.round(maxPuntos - segundosJuego);
         return puntuacion < 0 ? 0 : puntuacion;
     }
-    
+
     public void finalizarPartida() {
         this.gameOver();
     }
-    
+
     public Collection<Casilla> getCasillas() {
         return this.mapaCasillas.values();
     }
-    
+
     public void pausarJuego() {
         if (!this.juegoTerminado) {
             this.cronoJuego.pausa();
@@ -233,7 +233,7 @@ public class JuegoMinas implements GestorEventosCasilla, DisparadorEventosCasill
             }
         }
     }
-    
+
     public void reanudarJuego() {
         if (!this.juegoTerminado) {
             this.cronoJuego.contar();
@@ -242,5 +242,5 @@ public class JuegoMinas implements GestorEventosCasilla, DisparadorEventosCasill
             }
         }
     }
-    
+
 }
