@@ -6,10 +6,15 @@
             <file>file:/home/fgrau/NetBeansProjects/jaminas/src/com/palmaactiva/jaminas/lib/JuegoMinas.java</file>
             <file>file:/home/fgrau/NetBeansProjects/jaminas/src/com/palmaactiva/jaminas/ui/Ventana.java</file>
             <file>file:/home/fgrau/NetBeansProjects/jaminas/src/com/palmaactiva/jaminas/lib/Puntuacion.java</file>
+            <file>file:/home/fgrau/NetBeansProjects/jaminas/src/com/palmaactiva/jaminas/io/Datos.java</file>
+            <file>file:/home/fgrau/NetBeansProjects/jaminas/src/com/palmaactiva/jaminas/ui/PanelPartidaPersonalizada.java</file>
             <file>file:/home/fgrau/NetBeansProjects/jaminas/src/com/palmaactiva/jaminas/lib/Casilla.java</file>
+            <file>file:/home/fgrau/NetBeansProjects/jaminas/build.xml</file>
             <file>file:/home/fgrau/NetBeansProjects/jaminas/src/com/palmaactiva/jaminas/lib/CasillaMina.java</file>
             <file>file:/home/fgrau/NetBeansProjects/jaminas/src/com/palmaactiva/jaminas/ui/DialogoNuevoJuego.java</file>
             <file>file:/home/fgrau/NetBeansProjects/jaminas/.gitignore</file>
+            <file>file:/home/fgrau/NetBeansProjects/jaminas/src/com/palmaactiva/jaminas/lib/MejoresPuntuaciones.java</file>
+            <file>file:/home/fgrau/NetBeansProjects/jaminas/src/com/palmaactiva/jaminas/ui/DialogoPuntuaciones.java</file>
         </group>
     </open-files>
 </project-private>

@@ -65,16 +65,14 @@ public class Datos implements ProveedorDatos {
     }
 
     public static SistemaOperativo getSistemaOperativo() {
-        switch (System.getProperty("os.name").toLowerCase()) {
-            case "mac":
-                return SistemaOperativo.MACOS;
-            case "unix":
-            case "linux":
-                return SistemaOperativo.LINUX;
-            case "windows":
-                return SistemaOperativo.WINDOWS;
+        String nombreSO = System.getProperty("os.name").toLowerCase();
+        if (nombreSO.contains("win")) {
+            return SistemaOperativo.WINDOWS;
+        } else if (nombreSO.contains("mac")) {
+            return SistemaOperativo.MACOS;
+        } else {
+            return SistemaOperativo.LINUX;
         }
-        return null;
     }
 
     private static String comprobarExtension(String archivo, String extension) {
