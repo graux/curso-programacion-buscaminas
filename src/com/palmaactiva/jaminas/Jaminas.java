@@ -14,16 +14,16 @@ import com.palmaactiva.jaminas.ui.Ventana;
 public class Jaminas {
 
     private Ventana ventanaJuego;
-    
-    private Jaminas(){
+
+    private Jaminas() {
         this.ventanaJuego = new Ventana();
     }
-    
-    public void lanzarVentanaJuego(){
+
+    public void lanzarVentanaJuego() {
         this.ventanaJuego.setVisible(true);
         this.ventanaJuego.setLocationRelativeTo(null);
     }
-    
+
     /**
      * @param args the command line arguments
      */

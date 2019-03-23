@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.palmaactiva.jaminas.ui;
 
 import java.awt.event.ComponentAdapter;
@@ -16,11 +11,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class DialogoNuevoJuego extends javax.swing.JDialog {
 
-    private Ventana ventanaJuego;
+    private PanelPartidaPersonalizada partidaPersonalizada;
+    private final Ventana ventanaJuego;
 
-    /**
-     * Creates new form DialogoNuevoJuego
-     */
     public DialogoNuevoJuego(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         ventanaJuego = (Ventana) parent;
@@ -37,25 +30,22 @@ public class DialogoNuevoJuego extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jCargarPartida = new javax.swing.JFileChooser();
         jPanel1 = new javax.swing.JPanel();
+        PanelBotones = new javax.swing.JPanel();
         jButtonFacil = new javax.swing.JButton();
-        jButtonMedio = new javax.swing.JButton();
         jButtonDificil = new javax.swing.JButton();
+        jButtonMedio = new javax.swing.JButton();
         jButtonPersonalizado = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButtonSalir = new javax.swing.JButton();
         jButtonCargar = new javax.swing.JButton();
-
-        jCargarPartida.setApproveButtonText("Cargar");
-        jCargarPartida.setDialogTitle("Selecciona una partida a cargar");
-        jCargarPartida.setFileFilter(getFileFilter());
 
         setTitle("Jaminas - Nueva Partida");
         setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Detalles Nueva Partida"));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
         jButtonFacil.setFont(new java.awt.Font("DejaVu Sans", 0, 24)); // NOI18N
         jButtonFacil.setText("Fácil");
@@ -63,15 +53,6 @@ public class DialogoNuevoJuego extends javax.swing.JDialog {
         jButtonFacil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonFacilActionPerformed(evt);
-            }
-        });
-
-        jButtonMedio.setFont(new java.awt.Font("DejaVu Sans", 0, 24)); // NOI18N
-        jButtonMedio.setText("Medio");
-        jButtonMedio.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jButtonMedio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonMedioActionPerformed(evt);
             }
         });
 
@@ -84,6 +65,15 @@ public class DialogoNuevoJuego extends javax.swing.JDialog {
             }
         });
 
+        jButtonMedio.setFont(new java.awt.Font("DejaVu Sans", 0, 24)); // NOI18N
+        jButtonMedio.setText("Medio");
+        jButtonMedio.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jButtonMedio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMedioActionPerformed(evt);
+            }
+        });
+
         jButtonPersonalizado.setFont(new java.awt.Font("DejaVu Sans", 0, 24)); // NOI18N
         jButtonPersonalizado.setText("Personalizado");
         jButtonPersonalizado.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -93,36 +83,37 @@ public class DialogoNuevoJuego extends javax.swing.JDialog {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout PanelBotonesLayout = new javax.swing.GroupLayout(PanelBotones);
+        PanelBotones.setLayout(PanelBotonesLayout);
+        PanelBotonesLayout.setHorizontalGroup(
+            PanelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelBotonesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButtonFacil, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonMedio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButtonDificil, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonPersonalizado, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)))
+                .addGroup(PanelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonFacil, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonDificil, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(58, 58, 58)
+                .addGroup(PanelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonPersonalizado, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                    .addComponent(jButtonMedio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        PanelBotonesLayout.setVerticalGroup(
+            PanelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelBotonesLayout.createSequentialGroup()
+                .addGroup(PanelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonFacil, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonMedio, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(18, 18, 18)
+                .addGroup(PanelBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonDificil, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonPersonalizado, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButtonPersonalizado, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jButtonFacil.getAccessibleContext().setAccessibleDescription("");
+
+        jPanel1.add(PanelBotones, java.awt.BorderLayout.CENTER);
 
         jButtonSalir.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
         jButtonSalir.setText("Salir");
@@ -186,24 +177,36 @@ public class DialogoNuevoJuego extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jButtonCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCargarActionPerformed
-        this.jCargarPartida.showOpenDialog(null);
+        this.ventanaJuego.cargarPartida();
     }//GEN-LAST:event_jButtonCargarActionPerformed
 
-    private void jButtonFacilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFacilActionPerformed
-        this.ventanaJuego.nuevaPartida(8, 8, 10);
-    }//GEN-LAST:event_jButtonFacilActionPerformed
+    private void jButtonDificilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDificilActionPerformed
+        this.ventanaJuego.nuevaPartida(16, 30, 99);
+    }//GEN-LAST:event_jButtonDificilActionPerformed
+
+    private void jButtonPersonalizadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPersonalizadoActionPerformed
+        this.PanelBotones.setVisible(false);
+        if (this.partidaPersonalizada == null) {
+            this.partidaPersonalizada = new PanelPartidaPersonalizada(this.ventanaJuego);
+            this.PanelBotones.getParent().add(this.partidaPersonalizada);
+        } else {
+            this.partidaPersonalizada.setVisible(true);
+        }
+        this.partidaPersonalizada.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                DialogoNuevoJuego.this.PanelBotones.setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_jButtonPersonalizadoActionPerformed
 
     private void jButtonMedioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMedioActionPerformed
         this.ventanaJuego.nuevaPartida(16, 16, 40);
     }//GEN-LAST:event_jButtonMedioActionPerformed
 
-    private void jButtonDificilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDificilActionPerformed
-        this.ventanaJuego.nuevaPartida(30, 16, 99);
-    }//GEN-LAST:event_jButtonDificilActionPerformed
-
-    private void jButtonPersonalizadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPersonalizadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonPersonalizadoActionPerformed
+    private void jButtonFacilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFacilActionPerformed
+        this.ventanaJuego.nuevaPartida(8, 8, 10);
+    }//GEN-LAST:event_jButtonFacilActionPerformed
 
     private void initEventos() {
         this.addComponentListener(new ComponentAdapter() {
@@ -261,13 +264,13 @@ public class DialogoNuevoJuego extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel PanelBotones;
     private javax.swing.JButton jButtonCargar;
     private javax.swing.JButton jButtonDificil;
     private javax.swing.JButton jButtonFacil;
     private javax.swing.JButton jButtonMedio;
     private javax.swing.JButton jButtonPersonalizado;
     private javax.swing.JButton jButtonSalir;
-    private javax.swing.JFileChooser jCargarPartida;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables

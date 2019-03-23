@@ -4,28 +4,45 @@
  */
 package com.palmaactiva.jaminas.ui;
 
+import com.palmaactiva.jaminas.io.Datos;
+import com.palmaactiva.jaminas.io.ProveedorDatos;
+import com.palmaactiva.jaminas.lib.JuegoMinas;
+import com.palmaactiva.jaminas.lib.MejoresPuntuaciones;
+import com.palmaactiva.jaminas.ui.events.EventoCasilla;
+import com.palmaactiva.jaminas.ui.events.GestorEventosCasilla;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Insets;
+import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
-import javax.swing.JButton;
+import java.text.NumberFormat;
+import java.util.Locale;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.joda.time.Period;
 
 /**
  *
  * @author Fran Grau - fran@kydemy.com
  */
-public class Ventana extends javax.swing.JFrame {
+public class Ventana extends javax.swing.JFrame implements GestorEventosCasilla {
 
     private DialogoNuevoJuego dialogoNuevoJuego;
+    private Timer contadorTiempo;
+    private JuegoMinas juegoActual;
+    private MejoresPuntuaciones mejoresPuntuaciones;
+    private final ProveedorDatos datosJaminas;
 
-    /**
-     * Creates new form Ventana
-     */
     public Ventana() {
         initApariencia();
         initComponents();
         initEventos();
+        datosJaminas = Datos.getInstancia();
+        this.mejoresPuntuaciones = new MejoresPuntuaciones(datosJaminas);
+        this.mejoresPuntuaciones.cargarPuntuaciones();
     }
 
     /**
@@ -37,55 +54,157 @@ public class Ventana extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        SelectorArchivo = new javax.swing.JFileChooser();
         jPanelJuego = new javax.swing.JPanel();
         jPanelRegilla = new javax.swing.JPanel();
         jPanelEstado = new javax.swing.JPanel();
+        EtiquetaTiempoJuego = new javax.swing.JLabel();
+        EtiquetaMinas = new javax.swing.JLabel();
+        EtiquetaTiempoJuego2 = new javax.swing.JLabel();
+        EtiquetaTiempoJuego3 = new javax.swing.JLabel();
+        EtiquetaCasillas = new javax.swing.JLabel();
+        BotonReintentar = new javax.swing.JButton();
+        BotonNuevoJuego = new javax.swing.JButton();
+        EtiquetaTiempoJuego4 = new javax.swing.JLabel();
+        EtiquetaPuntuacion = new javax.swing.JLabel();
         jMenuBar = new javax.swing.JMenuBar();
         jMenuArchivo = new javax.swing.JMenu();
         jMenuNuevo = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jMenuCargar = new javax.swing.JMenuItem();
         jMenuGuardar = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuSalir = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuReiniciar = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenuVerPuntuaciones = new javax.swing.JMenuItem();
 
-        jMenuItem3.setText("jMenuItem3");
-
-        jMenuItem4.setText("jMenuItem4");
+        SelectorArchivo.setFileFilter(new FileNameExtensionFilter("Archivos Jaminas", Datos.EXTENSION_JUEGO, "jmg"));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(640, 455));
-        setPreferredSize(new java.awt.Dimension(620, 440));
         setResizable(false);
         setSize(new java.awt.Dimension(620, 440));
 
+        jPanelJuego.setBackground(new java.awt.Color(0, 51, 51));
         jPanelJuego.setBorder(new javax.swing.border.MatteBorder(null));
-        jPanelJuego.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanelJuego.setLayout(null);
 
-        javax.swing.GroupLayout jPanelRegillaLayout = new javax.swing.GroupLayout(jPanelRegilla);
-        jPanelRegilla.setLayout(jPanelRegillaLayout);
-        jPanelRegillaLayout.setHorizontalGroup(
-            jPanelRegillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 321, Short.MAX_VALUE)
-        );
-        jPanelRegillaLayout.setVerticalGroup(
-            jPanelRegillaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 347, Short.MAX_VALUE)
-        );
+        jPanelRegilla.setBackground(new Color(0,0,0,0));
+        jPanelRegilla.setLayout(new java.awt.GridLayout(1, 0));
+        jPanelJuego.add(jPanelRegilla);
+        jPanelRegilla.setBounds(1, 1, 320, 420);
 
-        jPanelJuego.add(jPanelRegilla, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 24, -1, -1));
+        EtiquetaTiempoJuego.setFont(new java.awt.Font("Montserrat", 1, 36)); // NOI18N
+        EtiquetaTiempoJuego.setForeground(new java.awt.Color(0, 51, 51));
+        EtiquetaTiempoJuego.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        EtiquetaTiempoJuego.setText("00:00");
+
+        EtiquetaMinas.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
+        EtiquetaMinas.setForeground(new java.awt.Color(0, 51, 51));
+        EtiquetaMinas.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        EtiquetaMinas.setText("0 / 0");
+
+        EtiquetaTiempoJuego2.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
+        EtiquetaTiempoJuego2.setForeground(new java.awt.Color(0, 51, 51));
+        EtiquetaTiempoJuego2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        EtiquetaTiempoJuego2.setText("Minas:");
+
+        EtiquetaTiempoJuego3.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
+        EtiquetaTiempoJuego3.setForeground(new java.awt.Color(0, 51, 51));
+        EtiquetaTiempoJuego3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        EtiquetaTiempoJuego3.setText("Casillas:");
+
+        EtiquetaCasillas.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
+        EtiquetaCasillas.setForeground(new java.awt.Color(0, 51, 51));
+        EtiquetaCasillas.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        EtiquetaCasillas.setText("0 / 0");
+
+        BotonReintentar.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+        BotonReintentar.setText("Reintentar");
+        BotonReintentar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonReintentarActionPerformed(evt);
+            }
+        });
+
+        BotonNuevoJuego.setFont(new java.awt.Font("DejaVu Sans", 0, 18)); // NOI18N
+        BotonNuevoJuego.setText("Nuevo Juego...");
+        BotonNuevoJuego.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonNuevoJuegoActionPerformed(evt);
+            }
+        });
+
+        EtiquetaTiempoJuego4.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
+        EtiquetaTiempoJuego4.setForeground(new java.awt.Color(0, 51, 51));
+        EtiquetaTiempoJuego4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        EtiquetaTiempoJuego4.setText("Puntuación:");
+
+        EtiquetaPuntuacion.setFont(new java.awt.Font("Montserrat", 1, 18)); // NOI18N
+        EtiquetaPuntuacion.setForeground(new java.awt.Color(0, 51, 51));
+        EtiquetaPuntuacion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        EtiquetaPuntuacion.setText("0");
 
         javax.swing.GroupLayout jPanelEstadoLayout = new javax.swing.GroupLayout(jPanelEstado);
         jPanelEstado.setLayout(jPanelEstadoLayout);
         jPanelEstadoLayout.setHorizontalGroup(
             jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 220, Short.MAX_VALUE)
+            .addGroup(jPanelEstadoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(EtiquetaTiempoJuego, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEstadoLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addGroup(jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(EtiquetaTiempoJuego3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(EtiquetaTiempoJuego4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(EtiquetaTiempoJuego2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelEstadoLayout.createSequentialGroup()
+                                .addGroup(jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanelEstadoLayout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(EtiquetaCasillas, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEstadoLayout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(EtiquetaMinas, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 1, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEstadoLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(EtiquetaPuntuacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(19, 19, 19)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelEstadoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BotonNuevoJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BotonReintentar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35))
         );
         jPanelEstadoLayout.setVerticalGroup(
             jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanelEstadoLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(EtiquetaTiempoJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addGroup(jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(EtiquetaMinas, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(EtiquetaTiempoJuego2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(EtiquetaCasillas, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(EtiquetaTiempoJuego3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelEstadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(EtiquetaPuntuacion, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(EtiquetaTiempoJuego4, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(BotonReintentar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BotonNuevoJuego, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         jMenuArchivo.setText("Archivo");
@@ -100,8 +219,17 @@ public class Ventana extends javax.swing.JFrame {
         jMenuArchivo.add(jMenuNuevo);
         jMenuArchivo.add(jSeparator1);
 
+        jMenuCargar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuCargar.setText("Cargar Partida...");
+        jMenuCargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuCargarActionPerformed(evt);
+            }
+        });
+        jMenuArchivo.add(jMenuCargar);
+
         jMenuGuardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuGuardar.setText("Guardar");
+        jMenuGuardar.setText("Guardar Partida...");
         jMenuGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuGuardarActionPerformed(evt);
@@ -121,7 +249,27 @@ public class Ventana extends javax.swing.JFrame {
 
         jMenuBar.add(jMenuArchivo);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Edición");
+
+        jMenuReiniciar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuReiniciar.setText("Reiniciar");
+        jMenuReiniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuReiniciarActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuReiniciar);
+        jMenu2.add(jSeparator3);
+
+        jMenuVerPuntuaciones.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuVerPuntuaciones.setText("Ver Mejores Puntuaciones...");
+        jMenuVerPuntuaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuVerPuntuacionesActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuVerPuntuaciones);
+
         jMenuBar.add(jMenu2);
 
         setJMenuBar(jMenuBar);
@@ -130,22 +278,27 @@ public class Ventana extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanelJuego, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanelJuego, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanelEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanelJuego, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanelJuego, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuGuardarActionPerformed
-        // TODO add your handling code here:
+        this.juegoActual.pausarJuego();
+        if (this.SelectorArchivo.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            this.datosJaminas.guardarPartida(this.juegoActual, this.SelectorArchivo.getSelectedFile().getAbsolutePath());
+            JOptionPane.showMessageDialog(this, "Partida guardada correctamente", "Partida Guardada", JOptionPane.INFORMATION_MESSAGE);
+        }
+        this.juegoActual.reanudarJuego();
     }//GEN-LAST:event_jMenuGuardarActionPerformed
 
     private void jMenuNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuNuevoActionPerformed
@@ -156,6 +309,28 @@ public class Ventana extends javax.swing.JFrame {
         this.salirJuego();
     }//GEN-LAST:event_jMenuSalirActionPerformed
 
+    private void BotonReintentarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonReintentarActionPerformed
+        this.nuevaPartida(this.juegoActual.getFilas(), this.juegoActual.getColumnas(), this.juegoActual.getNumeroMinas());
+    }//GEN-LAST:event_BotonReintentarActionPerformed
+
+    private void BotonNuevoJuegoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonNuevoJuegoActionPerformed
+        this.dialogoNuevoJuego.setVisible(true);
+    }//GEN-LAST:event_BotonNuevoJuegoActionPerformed
+
+    private void jMenuReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuReiniciarActionPerformed
+        this.nuevaPartida(this.juegoActual.getFilas(), this.juegoActual.getColumnas(), this.juegoActual.getNumeroMinas());
+    }//GEN-LAST:event_jMenuReiniciarActionPerformed
+
+    private void jMenuVerPuntuacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuVerPuntuacionesActionPerformed
+        this.juegoActual.finalizarPartida();
+        this.contadorTiempo.stop();
+        new DialogoPuntuaciones(this, true, this.mejoresPuntuaciones).setVisible(true);
+    }//GEN-LAST:event_jMenuVerPuntuacionesActionPerformed
+
+    private void jMenuCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuCargarActionPerformed
+        this.cargarPartida();
+    }//GEN-LAST:event_jMenuCargarActionPerformed
+
     private void initEventos() {
         this.addComponentListener(new ComponentAdapter() {
             public void componentShown(ComponentEvent e) {
@@ -165,6 +340,9 @@ public class Ventana extends javax.swing.JFrame {
                     dialogoNuevoJuego.setVisible(true);
                 }
             }
+        });
+        this.contadorTiempo = new Timer(200, (evento) -> {
+            Ventana.this.actualizarEstadoJuego();
         });
     }
 
@@ -178,30 +356,46 @@ public class Ventana extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Ventana.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Ventana.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Ventana.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Ventana.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Ventana.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Ventana.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Ventana.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Ventana.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotonNuevoJuego;
+    private javax.swing.JButton BotonReintentar;
+    private javax.swing.JLabel EtiquetaCasillas;
+    private javax.swing.JLabel EtiquetaMinas;
+    private javax.swing.JLabel EtiquetaPuntuacion;
+    private javax.swing.JLabel EtiquetaTiempoJuego;
+    private javax.swing.JLabel EtiquetaTiempoJuego2;
+    private javax.swing.JLabel EtiquetaTiempoJuego3;
+    private javax.swing.JLabel EtiquetaTiempoJuego4;
+    private javax.swing.JFileChooser SelectorArchivo;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenuArchivo;
     private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JMenuItem jMenuCargar;
     private javax.swing.JMenuItem jMenuGuardar;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuNuevo;
+    private javax.swing.JMenuItem jMenuReiniciar;
     private javax.swing.JMenuItem jMenuSalir;
+    private javax.swing.JMenuItem jMenuVerPuntuaciones;
     private javax.swing.JPanel jPanelEstado;
     private javax.swing.JPanel jPanelJuego;
     private javax.swing.JPanel jPanelRegilla;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     // End of variables declaration//GEN-END:variables
 
     public void salirJuego() {
@@ -209,37 +403,114 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     public void nuevaPartida(int filas, int columnas, int numMinas) {
+        int buttonSize = JuegoMinas.getTamañoBoton(filas, columnas);
+        this.inicializarJuego(new JuegoMinas(filas, columnas, numMinas, buttonSize));
+        this.comenzarJuego();
+    }
+
+    private void inicializarJuego(JuegoMinas juego) {
+        this.juegoActual = juego;
+        int anchoRegilla = juego.getColumnas() * juego.getTamañoBoton();
+        int altoRegilla = juego.getFilas() * juego.getTamañoBoton();
+        Dimension tamañoContenido = new Dimension(300 + anchoRegilla, 100 + altoRegilla);
+
+        jPanelRegilla.removeAll();
+        jPanelRegilla.setSize(anchoRegilla, altoRegilla);
+
+        this.setPreferredSize(tamañoContenido);
+        this.setMinimumSize(tamañoContenido);
+        this.setMaximumSize(tamañoContenido);
+        setResizable(false);
+        ((GridLayout) jPanelRegilla.getLayout()).setColumns(juego.getColumnas());
+        ((GridLayout) jPanelRegilla.getLayout()).setRows(juego.getFilas());
+        jPanelRegilla.removeAll();
+        jPanelRegilla.setVisible(false);
+        this.juegoActual.inicializarPartida(jPanelRegilla);
+        jPanelRegilla.setVisible(true);
+        setLocationRelativeTo(null);
+        jPanelRegilla.updateUI();
+        this.pack();
+        jPanelRegilla.setLocation((jPanelJuego.getWidth() - jPanelRegilla.getWidth()) / 2, (jPanelJuego.getHeight() - jPanelRegilla.getHeight()) / 2);
+        this.juegoActual.addGestorEventos(this);
+    }
+
+    private void comenzarJuego() {
         if (dialogoNuevoJuego != null) {
             dialogoNuevoJuego.dispose();
         }
-        this.setVisible(false);
-        int buttonSize = 30;
+        this.juegoActual.empezarJuego();
+        this.contadorTiempo.start();
+        this.jMenuGuardar.setEnabled(true);
+        this.actualizarEtiquetas();
+    }
 
-        jPanelRegilla.setLayout(new java.awt.GridLayout(filas, columnas, 0, 0));
-        jPanelRegilla.setMaximumSize(new Dimension(filas * buttonSize, columnas * buttonSize));
-        jPanelRegilla.setSize(filas * buttonSize, columnas * buttonSize);
-        jPanelRegilla.setBounds(0, 0, filas * buttonSize, columnas * buttonSize);
-        Dimension contentSize = new Dimension(600 + filas * buttonSize, 200 + columnas * buttonSize);
-        this.setPreferredSize(contentSize);
-        this.setMinimumSize(contentSize);
-        this.setMaximumSize(contentSize);
-        this.setSize(contentSize);
-        setResizable(false);
-        jPanelEstado.setSize(600, 200 + columnas * buttonSize);
+    private void actualizarEstadoJuego() {
+        Period tiempoJuego = this.juegoActual.getTiempoJuego();
+        int minutos = tiempoJuego.getMinutes();
+        int segundos = tiempoJuego.getSeconds();
 
-        JButton botonJuego = null;
-        for (int indiceFilas = 0; indiceFilas < filas; indiceFilas++) {
-            for (int indiceColumnas = 0; indiceColumnas < columnas; indiceColumnas++) {
-                botonJuego = new JButton();
-                botonJuego.setSize(buttonSize, buttonSize);
-                botonJuego.setMargin(new Insets(0, 0, 0, 0));
-                botonJuego.setBorderPainted(false);
-                jPanelRegilla.add(botonJuego);
-            }
+        this.EtiquetaTiempoJuego.setText(
+                String.format("%02d", minutos) + ":"
+                + String.format("%02d", segundos)
+        );
+    }
+
+    private void gameOver() {
+        this.EtiquetaTiempoJuego.setForeground(Color.RED);
+        this.contadorTiempo.stop();
+        this.setVisibleBotones(true);
+        this.jMenuGuardar.setEnabled(false);
+    }
+
+    @Override
+    public void gestionarEventoCasilla(EventoCasilla evento) {
+        switch (evento.getTipoEvento()) {
+            case BOMBA:
+                this.gameOver();
+                break;
+            case INICIO:
+                this.EtiquetaTiempoJuego.setForeground(new Color(0, 51, 51));
+                this.setVisibleBotones(false);
+                break;
+            case COMPLETADO:
+                this.contadorTiempo.stop();
+                this.EtiquetaTiempoJuego.setForeground(new Color(0, 90, 51));
+                this.actualizarEtiquetas();
+                int puntuacionPartida = this.juegoActual.getPuntuacion();
+                String textoPuntuacion = NumberFormat.getInstance(Locale.getDefault()).format(puntuacionPartida);
+                this.EtiquetaPuntuacion.setText(textoPuntuacion);
+                String nombre = JOptionPane.showInputDialog(this, "<html>Enhorabuena! has ganado!!<br/><strong>Tu puntuación es: " + textoPuntuacion + "<strong><br/><br/>Introduce tu nombre para guardar la puntuación:</html>", "Jaminas Completado!", JOptionPane.QUESTION_MESSAGE);
+                if (nombre != null) {
+                    this.mejoresPuntuaciones.addPuntuacion(nombre, this.juegoActual);
+                }
+                this.BotonNuevoJuego.setVisible(true);
+                break;
+            default:
+                this.actualizarEtiquetas();
         }
-        this.pack();
-        setLocationRelativeTo(null);
-        jPanelRegilla.updateUI();
-        this.setVisible(true);
+    }
+
+    private void actualizarEtiquetas() {
+        this.EtiquetaMinas.setText(this.juegoActual.getNumeroBanderas() + " / " + this.juegoActual.getNumeroMinas());
+        this.EtiquetaCasillas.setText(this.juegoActual.getNumeroCasillasDescubiertas() + " / " + this.juegoActual.getNumeroCasillas());
+    }
+
+    private void setVisibleBotones(boolean visible) {
+        this.BotonNuevoJuego.setVisible(visible);
+        this.BotonReintentar.setVisible(visible);
+    }
+
+    void cargarPartida() {
+        if (this.juegoActual != null) {
+            this.juegoActual.pausarJuego();
+        }
+        if (this.SelectorArchivo.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            JuegoMinas juegoCargado = this.datosJaminas.cargarPartida(this.SelectorArchivo.getSelectedFile().getAbsolutePath());
+            this.inicializarJuego(juegoCargado);
+            JOptionPane.showMessageDialog(this, "Partida cargada correctamente", "Partida Cargada", JOptionPane.INFORMATION_MESSAGE);
+            this.comenzarJuego();
+        } else if (this.juegoActual != null) {
+            this.juegoActual.reanudarJuego();
+        }
     }
 }
