@@ -1,6 +1,7 @@
 package com.palmaactiva.jaminas.lib;
 
 import com.palmaactiva.jaminas.io.ProveedorDatos;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -31,6 +32,9 @@ public class MejoresPuntuaciones {
     }
 
     public void cargarPuntuaciones() {
-        this.puntuaciones.addAll(this.proveedorDatos.cargarPuntuaciones());
+        List<Puntuacion> puntuacionesCargadas = this.proveedorDatos.cargarPuntuaciones();
+        if (puntuacionesCargadas != null && puntuacionesCargadas.size() > 0) {
+            this.puntuaciones.addAll(puntuacionesCargadas);
+        }
     }
 }
